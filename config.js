@@ -1,0 +1,9 @@
+const HALF_HOUR = 60 * 1000 * 30;
+const ONE_WEEK = 60 * 1000 * 60 * 24 * 7;
+
+module.exports = {
+	SERVER_PORT: 3001,
+	READ_SENSOR_DATA_INTERVAL: HALF_HOUR,
+	DATA_TTL: ONE_WEEK,
+	I2C_ADDRESS: 0x76,
+};

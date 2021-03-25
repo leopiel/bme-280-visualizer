@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
+	<link rel="stylesheet" href="styles.css">
+
+	<title>BME 280 home monitor!</title>
+</head>
+
+<body>
+	<h1>Temperature</h1>
+	<div class='chart-container'>
+		<canvas class="temperature-chart"></canvas>
+	</div>
+	<h1>Humidity</h1>
+	<div class='chart-container'>
+		<canvas class="humidity-chart"></canvas>
+	</div>
+	<script>
+
+
+		const formatTimestamp = (timestamp) => {
+			const date = new Date(timestamp);
+
+			return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth()).padStart(2, '0')} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+		}
+		const file = JSON.parse('<%- fileData %>');
+		const ctx = document.querySelector(".temperature-chart");
+
+		var myChart = new Chart(ctx, {
+			type: "bar",
+			responsive: true,
+			data: {
+				labels: file.map((f) => formatTimestamp(f.timestamp)),
+				datasets: [
+					{
+						label: "Temperature",
+						data: file.map((f) => f.data.temperature),
+						borderWidth: 1,
+					},
+				],
+			},
+			options: {
+				legend: {
+					display: false
+				},
+				scales: {
+					xAxes: [
+						{
+							ticks: {
+								maxTicksLimit: 20,
+								stepSize: 0.5
+							},
+						},
+					],
+				},
+			},
+		});
+
+		const humidityCanvas = document.getElementById("humidity-chart");
+
+		var humidityChart = new Chart(humidityCanvas, {
+			type: "bar",
+			responsive: true,
+			data: {
+				labels: file.map((f) => formatTimestamp(f.timestamp)),
+				datasets: [
+					{
+						label: "Humidity",
+						data: file.map((f) => f.data.humidity),
+						borderWidth: 1,
+					},
+				],
+			},
+			options: {
+				legend: {
+					display: false
+				},
+				scales: {
+					xAxes: [
+						{
+							ticks: {
+								maxTicksLimit: 20,
+								stepSize: 0.5
+							},
+						},
+					],
+				},
+			},
+		});
+	</script>
+</body>
+
+</html>
