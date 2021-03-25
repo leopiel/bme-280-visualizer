@@ -12,7 +12,10 @@ npm install && node index.js
 
 After that it starts reading sensor data and writes it to `sensor_log.json` from which it's being passed to front-end. The front-end is accessible from port 3001.
 
-To keep the program running in the background one can use [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) or something similar.
+To keep the program running in the background one can use [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) or something similar. Inside project folder run:
+```
+npm install -g pm2 && npm install && pm2 start index.js
+```
 
 # Config
 
