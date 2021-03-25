@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const config = require('./config');
 
-// const bme280 = new BME280({i2cAddress: config.I2C_ADDRESS});
+const bme280 = new BME280({i2cAddress: config.I2C_ADDRESS});
 
 const cleanUpOldData = (fileData) => {
 	return fileData.filter(
@@ -13,8 +13,7 @@ const cleanUpOldData = (fileData) => {
 
 const readSensorData = async () => {
 	try {
-		// const data = await bme280.readSensorData();
-		const data = { "temperature_C": 24.26, "pressure_hPa": 1008.927660411057, "humidity": 23.149523434491083 }
+		const data = await bme280.readSensorData();
 		const timestamp = Date.now();
 		const fileRaw = fs.readFileSync("./sensor_log.json", "utf8");
 
@@ -40,7 +39,7 @@ const readSensorData = async () => {
 
 const initSensor = async () => {
 	try {
-		// await bme280.init();
+		await bme280.init();
 		console.log("BME280 initialization succeeded");
 
 		readSensorData();
