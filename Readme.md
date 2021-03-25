@@ -7,7 +7,7 @@ NodeJS program for visualizing bme-280 sensor data. Meant for use with raspberry
 The server can be started with:
 
 ```
-node index.js
+npm install && node index.js
 ```
 
 After that it starts reading sensor data and writes it to `sensor_log.json` from which it's being passed to front-end. The front-end is accessible from port 3001.
