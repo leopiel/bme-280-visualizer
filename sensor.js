@@ -2,7 +2,6 @@ const BME280 = require("bme280-sensor");
 const fs = require("fs");
 
 const config = require('./config');
-
 const bme280 = new BME280({i2cAddress: config.I2C_ADDRESS});
 
 const cleanUpOldData = (fileData) => {
