@@ -22,8 +22,8 @@ const readSensorData = async () => {
 			timestamp,
 			data: {
 				temperature: data.temperature_C,
-				pressure: data.pressure_hPa,
-				humidity: data.humidity,
+				pressure: Math.round(data.pressure_hPa),
+				humidity: Math.round(data.humidity * 100) / 100,
 			},
 		});
 
