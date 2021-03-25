@@ -23,7 +23,7 @@ Config can be found in `config.js` and contains following options:
 
 | NAME                        | DEFAULT    | DESCRIPTION                                                                    |
 | --------------------------- | ---------- | ------------------------------------------------------------------------------ |
-| `SERVER_PORT`               | 3001       | The port for the nodejs server. The front-end is accessible from root path "*ip_address*:3001/" |
+| `SERVER_PORT`               | 3001       | The port for the nodejs server. The front-end is accessible from root path "...:3001/" |
 | `DATA_TTL`                  | one week   | The period of time for which the data is kept. Older data will be deleted.     |
 | `READ_SENSOR_DATA_INTERVAL` | 30 minutes | The interval for reading the sensor data and storing it to `sensor_log.json`   |
 | `I2C_ADDRESS`                 | 0x76       | The i2c address from which the bme-280 data is being read                      |
