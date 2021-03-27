@@ -3,19 +3,28 @@
 
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 	<link rel="stylesheet" href="styles.css">
 
-	<title>BME 280 home monitor!</title>
+	<title>BME 280 data visualizer!</title>
 </head>
 
 <body>
-	<h1>Temperature</h1>
+	<div class="current-data-container">
+		<div class="data-card">
+			<div class="data-card__heading">Current temperature</div>
+			<div class="data-card__value data-card__value--temp">25C</div>
+		</div>
+		<div class="data-card">
+			<div class="data-card__heading">Current humidity</div>
+			<div class="data-card__value data-card__value--humidity">25C</div>
+		</div>
+	</div>
+	<div class="last-measurment">
+		Last measurment 27/03 14:40
+	</div>
 	<div class='chart-container'>
 		<canvas class="temperature-chart"></canvas>
-	</div>
-	<h1>Humidity</h1>
-	<div class='chart-container'>
-		<canvas class="humidity-chart"></canvas>
 	</div>
 	<script>
 		const formatTimestamp = (timestamp) => {
@@ -23,10 +32,20 @@
 
 			return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth()).padStart(2, '0')} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 		}
+
+		const lastTempHolder = document.querySelector(".data-card__value--temp");
+		const lastHumidityHolder = document.querySelector(".data-card__value--humidity");
+
 		const file = JSON.parse('<%- fileData %>');
+		const lastMeasurement = file[file.length - 1];
+
+		lastTempHolder.innerHTML = `${lastMeasurement.data.temperature}°C`;
+		lastHumidityHolder.innerHTML = `${lastMeasurement.data.humidity}%`;
+
 		const ctx = document.querySelector(".temperature-chart");
 		const myChart = new Chart(ctx, {
-			type: "bar",
+			plugins: [ChartDataLabels],
+			type: "line",
 			responsive: true,
 			data: {
 				labels: file.map((f) => formatTimestamp(f.timestamp)),
@@ -34,51 +53,50 @@
 					{
 						label: "Temperature",
 						data: file.map((f) => f.data.temperature),
-						borderWidth: 1,
+						pointRadius: 0,
+						borderColor: '#E28290',
+						borderWidth: 2,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						datalabels: {
+							display: 'auto',
+							align: 'top',
+						}
 					},
-				],
-			},
-			options: {
-				legend: {
-					display: false
-				},
-				scales: {
-					xAxes: [
-						{
-							ticks: {
-								maxTicksLimit: 20,
-								stepSize: 0.5
-							},
-						},
-					],
-				},
-			},
-		});
-
-		const humidityCanvas = document.querySelector(".humidity-chart");
-		const humidityChart = new Chart(humidityCanvas, {
-			type: "bar",
-			responsive: true,
-			data: {
-				labels: file.map((f) => formatTimestamp(f.timestamp)),
-				datasets: [
 					{
 						label: "Humidity",
 						data: file.map((f) => f.data.humidity),
 						borderWidth: 1,
+						pointRadius: 0,
+						borderColor: '#235454',
+						borderWidth: 2,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						datalabels: {
+							display: 'auto',
+							align: 'top',
+						}
 					},
 				],
 			},
 			options: {
 				legend: {
-					display: false
+					display: true
 				},
 				scales: {
+					yAxes: [
+						{
+							scaleLabel: {
+								options: 20,
+							},
+							ticks: {
+								suggestedMax: 50,
+								suggestedMin: 0
+							}
+						}
+					],
 					xAxes: [
 						{
 							ticks: {
 								maxTicksLimit: 20,
-								stepSize: 0.5
 							},
 						},
 					],
