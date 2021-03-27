@@ -24,7 +24,7 @@
 		Last measurment 27/03 14:40
 	</div>
 	<div class='chart-container'>
-		<canvas class="temperature-chart"></canvas>
+		<canvas class="chart"></canvas>
 	</div>
 	<script>
 		const formatTimestamp = (timestamp) => {
@@ -42,7 +42,7 @@
 		lastTempHolder.innerHTML = `${lastMeasurement.data.temperature}°C`;
 		lastHumidityHolder.innerHTML = `${lastMeasurement.data.humidity}%`;
 
-		const ctx = document.querySelector(".temperature-chart");
+		const ctx = document.querySelector(".chart");
 		const myChart = new Chart(ctx, {
 			plugins: [ChartDataLabels],
 			type: "line",
