@@ -13,15 +13,14 @@
 	<div class="current-data-container">
 		<div class="data-card">
 			<div class="data-card__heading">Current temperature</div>
-			<div class="data-card__value data-card__value--temp">25C</div>
+			<div class="data-card__value data-card__value--temp"></div>
 		</div>
 		<div class="data-card">
 			<div class="data-card__heading">Current humidity</div>
-			<div class="data-card__value data-card__value--humidity">25C</div>
+			<div class="data-card__value data-card__value--humidity"></div>
 		</div>
 	</div>
 	<div class="last-measurment">
-		Last measurment 27/03 14:40
 	</div>
 	<div class='chart-container'>
 		<canvas class="chart"></canvas>
@@ -33,14 +32,38 @@
 			return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth()).padStart(2, '0')} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 		}
 
+		let minValue = 1000
+		let maxValue = 0;
+
 		const lastTempHolder = document.querySelector(".data-card__value--temp");
 		const lastHumidityHolder = document.querySelector(".data-card__value--humidity");
+		const lastMeasurementHolder = document.querySelector(".last-measurment");
 
 		const file = JSON.parse('<%- fileData %>');
 		const lastMeasurement = file[file.length - 1];
 
-		lastTempHolder.innerHTML = `${lastMeasurement.data.temperature}°C`;
-		lastHumidityHolder.innerHTML = `${lastMeasurement.data.humidity}%`;
+		if (lastMeasurement) {
+			lastTempHolder.innerHTML = `${lastMeasurement.data.temperature}°C`;
+			lastHumidityHolder.innerHTML = `${lastMeasurement.data.humidity}%`;
+			lastMeasurementHolder.innerHTML = `Last measurement: ${formatTimestamp(lastMeasurement.timestamp)}`;
+		}
+
+		file.forEach((f) => {
+			if (f.data.humidity > maxValue) {
+				maxValue = f.data.humidity;
+			}
+			if (f.data.humidity < minValue) {
+				minValue = f.data.humidity;
+			}
+
+			if (f.data.temperature > maxValue) {
+				maxValue = f.data.humidity;
+			}
+			if (f.data.temperature < minValue) {
+				minValue = f.data.humidity;
+			}
+		})
+
 
 		const ctx = document.querySelector(".chart");
 		const myChart = new Chart(ctx, {
@@ -88,8 +111,8 @@
 								options: 20,
 							},
 							ticks: {
-								suggestedMax: 50,
-								suggestedMin: 0
+								suggestedMax: maxValue + 3,
+								suggestedMin: minValue - 3,
 							}
 						}
 					],
